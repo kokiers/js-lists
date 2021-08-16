@@ -120,3 +120,39 @@ function getSysFont(text) {
       }  
     }
   }
+
+// 下载
+function downLoad(url, vm) {          
+  if (!url) {             
+    return;      
+  }    
+  request(url).then(res=>{   
+    if(res.status == 200){
+      let hname = res.headers['content-disposition'] || ''
+      const blob = new Blob([res.data])
+      let name = hname.split('=')[1] ? decodeURIComponent(hname.split('=')[1]) : ''
+      name = name && name.indexOf('"') != -1 ? name.split('"')[1] : name
+      const urls = window.URL.createObjectURL(blob)
+      var saveLink = document.createElement('a');        
+      var downloadSupported = 'download' in saveLink;        
+      if (downloadSupported) {          
+        name && (saveLink.download = name);          
+        saveLink.style.display = 'none';          
+        document.body.appendChild(saveLink);          
+        try {                     
+          saveLink.href = urls;            
+          saveLink.onclick = function() {              
+            requestAnimationFrame(function() {                
+              URL.revokeObjectURL(urls);              
+            })            
+          };          
+        } catch (e) {            
+          saveLink.href = urls;          
+        }          
+        saveLink.click();          
+        document.body.removeChild(saveLink);  
+      }      
+    }       
+  }).finally(()=>{ 
+  }) 
+}
