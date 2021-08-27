@@ -194,3 +194,27 @@ strChange('kokier')
 //"6Lkcopkeipe5rw"
 strChange("6Lkcopkeipe5rw",1)
 //"kokier"数组
+
+ function showSize(base64url) {
+    //把头部去掉
+    var str = base64url.replace('data:image/png;base64,', '');
+    // 找到等号，把等号也去掉
+    var equalIndex = str.indexOf('=');
+    if(str.indexOf('=')>0) {
+        str=str.substring(0, equalIndex);
+    }
+    // 原来的字符流大小，单位为字节
+    var strLength=str.length;
+    // 计算后得到的文件流大小，单位为字节
+    var fileLength=parseInt(strLength-(strLength/8)*2);
+    // 由字节转换为kb
+    var size = "";
+    size = (fileLength / 1024).toFixed(2);
+    var sizeStr = size + ""; //转成字符串
+    var index = sizeStr.indexOf("."); //获取小数点处的索引
+    var dou = sizeStr.substr(index + 1, 2) //获取小数点后两位的值
+    if (dou == "00") { //判断后两位是否为00，如果是则删除00                
+      return sizeStr.substring(0, index) + sizeStr.substr(index + 3, 2)
+    }
+    return size;
+  }
