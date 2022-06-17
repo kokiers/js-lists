@@ -1,3 +1,2 @@
 # js-lists
-test
-uususuu
+整理备忘小知识
